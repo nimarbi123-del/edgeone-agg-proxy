@@ -2,9 +2,9 @@
 // 验证 1) 渠道表与 secrets 是否一致 2) chat 非流式 3) Responses SSE 转换在真实数据上成立。
 // 运行： node tests/real-smoke.mjs
 import fs from 'node:fs';
-import { CHANNELS, channelFor } from '../functions/_shared/channels.js';
-import { onRequest as chatFn } from '../functions/v1/chat/completions/index.js';
-import { onRequest as responsesFn } from '../functions/v1/responses/index.js';
+import { CHANNELS, channelFor } from '../edge-functions/_shared/channels.js';
+import { onRequest as chatFn } from '../edge-functions/v1/chat/completions/index.js';
+import { onRequest as responsesFn } from '../edge-functions/v1/responses/index.js';
 
 const secrets = JSON.parse(fs.readFileSync(new URL('../secrets.local.json', import.meta.url), 'utf8'));
 const KEY_ENV = {

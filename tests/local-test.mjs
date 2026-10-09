@@ -2,10 +2,10 @@
 // 运行： node tests/local-test.mjs
 import assert from 'node:assert/strict';
 import http from 'node:http';
-import { CHANNELS } from '../functions/_shared/channels.js';
-import { onRequest as modelsFn } from '../functions/v1/models/index.js';
-import { onRequest as chatFn } from '../functions/v1/chat/completions/index.js';
-import { onRequest as responsesFn } from '../functions/v1/responses/index.js';
+import { CHANNELS } from '../edge-functions/_shared/channels.js';
+import { onRequest as modelsFn } from '../edge-functions/v1/models/index.js';
+import { onRequest as chatFn } from '../edge-functions/v1/chat/completions/index.js';
+import { onRequest as responsesFn } from '../edge-functions/v1/responses/index.js';
 
 const PORT = 18081;
 const KEY = 'test-key-123';
@@ -213,7 +213,7 @@ const ok = (name, extra) => { pass++; console.log('PASS  ' + name + (extra ? '  
   ok('/v1/responses 流式事件序列', events.length + ' events');
 
   // 转成 Chat 请求的检查：instructions→system，function_call_output→tool
-  const { toChatMessages, toChatTools } = await import('../functions/v1/responses/index.js');
+  const { toChatMessages, toChatTools } = await import('../edge-functions/v1/responses/index.js');
   const msgs = toChatMessages({
     instructions: 'sys',
     input: [

@@ -10,7 +10,8 @@
 3. **不要备案的前提 = 不能用中国大陆节点**。官方原文：加速区域为「Chinese mainland availability zone」或「global availability zone (including Chinese mainland)」时，绑定域名必须先完成 ICP 备案。平台免费域名 `*.edgeonepage.com` 无法备案 → 走海外区，最近节点在香港/亚太（官方称全球 3200+ 节点，其中亚太 2500+）。
 4. Edge Functions 无「最长执行时长」条目；Cloud Functions 有（默认 30 秒，可配到 120 秒）。Edge Functions 的限制是 **单次执行 CPU 时间 200 ms**（官方原文：*"CPU time slice allocated for single execution of a function, excluding I/O wait time"*）——纯转发的 SSE 代理 CPU 占用极低，I/O 等待不计入。
 5. 目录约定（官方 Getting Started）：`./edge-functions/api` 建 Edge Function，`./cloud-functions/api` 建 Cloud Function，导出 `onRequest(context)`。
-   - 注意：官方模板库里同时存在 `functions/` 目录的老例子（deepseek、mcp-on-edge）和 `edge-functions/` 目录的新例子（edge-ai-gateway、functions-fetch），两者都能被构建识别。本项目用 `functions/`，若部署后路由 404，把目录名改成 `edge-functions/` 即可。
+   - 官方模板库里同时存在 `functions/` 目录的老例子（deepseek、mcp-on-edge）和 `edge-functions/` 目录的新例子（edge-ai-gateway、functions-fetch）。本项目按官方文档用 `edge-functions/`；若构建不识别，把目录名改成 `functions/` 再部署。
+   - 官方路由映射原文：`/edge-functions/helloworld.js` → `example.com/helloworld`，即目录内路径直接映射到根路径，所以 `edge-functions/v1/chat/completions/index.js` → `/v1/chat/completions`。
 
 ## 二、Functions 写法（官方）
 

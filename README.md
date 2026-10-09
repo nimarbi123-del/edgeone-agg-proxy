@@ -12,7 +12,7 @@
 | `POST /v1/responses` | Codex CLI 的 Responses API（内部转 Chat Completions，回包还原成 Responses 事件流） |
 | `GET /` | 静态状态页（列出模型） |
 
-模型路由表在 `functions/_shared/channels.js`（不含密钥）。密钥只放控制台环境变量。
+模型路由表在 `edge-functions/_shared/channels.js`（不含密钥）。密钥只放控制台环境变量。
 
 ## 部署（EdgeOne Makers 控制台）
 
@@ -31,7 +31,7 @@
    curl.exe -s "https://<域名>/v1/models" -H "Authorization: Bearer <EO_PROXY_KEY>"
    ```
    返回 13 个模型 id 即成功。
-8. 如果 `/v1/*` 返回 404：把 `functions/` 目录整体改名为 `edge-functions/`（官方文档的目录名），重新部署。代码内容不用改。
+8. 如果构建报错说找不到函数目录或 `/v1/*` 返回 404：把 `edge-functions/` 目录整体改名为 `functions/`（老模板用的名字），重新部署。代码内容不用改。
 
 ## 环境变量
 
@@ -92,10 +92,10 @@ node tests/real-smoke.mjs    # 真实上游冒烟：4 个模型 chat + 2 个模�
 
 ```
 edgeone.json                    输出目录配置（./static）
-functions/_shared/channels.js   渠道表 + 鉴权 + 上游转发（无密钥）
-functions/v1/models/index.js    GET /v1/models
-functions/v1/chat/completions/index.js   POST /v1/chat/completions
-functions/v1/responses/index.js          POST /v1/responses
+edge-functions/_shared/channels.js   渠道表 + 鉴权 + 上游转发（无密钥）
+edge-functions/v1/models/index.js    GET /v1/models
+edge-functions/v1/chat/completions/index.js   POST /v1/chat/completions
+edge-functions/v1/responses/index.js          POST /v1/responses
 static/index.html               状态页
 tests/                          本地测试
 docs/eo_facts.md                EdgeOne 平台事实核查
