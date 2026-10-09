@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>agg-proxy</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { margin: 0; font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; background: #0f1115; color: #e6e8eb; }
+  main { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 18px; margin: 0 0 4px; font-weight: 600; }
+  .sub { color: #9aa3ad; font-size: 12px; margin-bottom: 16px; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border: 1px solid #23262d; border-radius: 6px; margin-bottom: 6px; background: #15181e; }
+  code { font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+  .tag { font-size: 11px; color: #9aa3ad; white-space: nowrap; }
+  .ok { color: #3ddc84; }
+  .err { color: #ff6b6b; }
+  #status { margin-bottom: 12px; font-size: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>agg-proxy</h1>
+  <div class="sub">/v1/models · /v1/chat/completions · /v1/responses</div>
+  <div id="status">loading…</div>
+  <div id="list"></div>
+</main>
+<script>
+(async () => {
+  const status = document.getElementById('status');
+  const list = document.getElementById('list');
+  try {
+    const res = await fetch('/v1/models', { headers: { 'X-Proxy-Key': new URLSearchParams(location.search).get('k') || '' } });
+    const data = await res.json();
+    if (!res.ok) throw new Error((data.error && data.error.message) || ('HTTP ' + res.status));
+    const models = data.data || [];
+    status.innerHTML = '<span class="ok">up</span> · ' + models.length + ' models';
+    list.innerHTML = models.map((m) => '<div class="row"><code>' + m.id + '</code><span class="tag">' + m.owned_by + '</span></div>').join('');
+  } catch (e) {
+    status.innerHTML = '<span class="err">down</span> · ' + String(e.message || e);
+  }
+})();
+</script>
+</body>
+</html>
