@@ -38,6 +38,7 @@ export async function onRequest({ request, env }) {
     return apiError('未知模型: ' + String(model) + '；可用模型: ' + allModels().map((m) => m.id).join(', '), 404);
   }
 
+
   const payload = { ...body };
   delete payload.model_alias;
   if (url.searchParams.get('stream') === 'true') payload.stream = true;
